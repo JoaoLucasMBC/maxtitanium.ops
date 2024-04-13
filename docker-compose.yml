@@ -9,6 +9,7 @@ services:
       dockerfile_inline: |
         FROM jenkins/jenkins:jdk17
         USER root
+        RUN groupadd -g 999 docker || groupmod -o -g 999 docker
         RUN apt-get update && apt-get install -y lsb-release
         RUN curl -fsSLo /usr/share/keyrings/docker-archive-keyring.asc \
           https://download.docker.com/linux/debian/gpg
@@ -27,7 +28,7 @@ services:
       - 50000:50000
     volumes:
       - $CONFIG/jenkins_home:/var/jenkins_home
-      # - /var/run/docker.sock:/var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock
     restart: always
     networks:
       - private-network

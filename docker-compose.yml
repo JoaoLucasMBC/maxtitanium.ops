@@ -12,7 +12,7 @@ services:
 
         RUN groupadd -g 999 docker || groupmod -o -g 999 docker
 
-        RUN apt-get update && apt-get install -y lsb-release
+        RUN apt-get update && apt-get install -y lsb-release iputils-ping
         RUN curl -fsSLo /usr/share/keyrings/docker-archive-keyring.asc \
           https://download.docker.com/linux/debian/gpg
         RUN echo "deb [arch=$(dpkg --print-architecture) \
@@ -44,6 +44,8 @@ services:
     restart: always
     networks:
       - private-network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
 networks:
   private-network:
